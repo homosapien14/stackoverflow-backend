@@ -5,7 +5,6 @@ const userService = new UserService();
 
 const signUp = async (req, res) => {
   try {
-    console.log(req.body.password);
     const data = {
       username: req.body.username,
       password: req.body.password,

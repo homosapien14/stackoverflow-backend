@@ -1,5 +1,8 @@
 const UserRepository = require("../repository/user.repository");
 const userRepository = new UserRepository();
+const UserService = require("../services/users.service");
+
+const userService = new UserService();
 
 const validateUserData = (req, res, next) => {
   const { username, password } = req.body;
@@ -30,16 +33,19 @@ const checkExistence = async (req, res, next) => {
 
   next();
 };
-const isAuthenticated = async (req, res, next) => {
+const auth = async (req, res, next) => {
   try {
     const token = req.headers["x-access-token"];
     const response = await userService.isAuthenticated(token);
+    res.locals.user_id = response;
     next();
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: "Need to Login",
-      data: {},
+      message: "Authentication failded , Need to Login once again",
+      data: {
+        authentication: false,
+      },
       success: false,
       err: error,
     });
@@ -49,5 +55,5 @@ const isAuthenticated = async (req, res, next) => {
 module.exports = {
   validateUserData,
   checkExistence,
-  isAuthenticated,
+  auth,
 };
