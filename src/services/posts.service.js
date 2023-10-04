@@ -24,6 +24,15 @@ class PostsService {
       throw error;
     }
   }
+  async updatePost(id, data) {
+    try {
+      const post = await this.PostsRepository.update(id, data);
+      return post;
+    } catch (error) {
+      console.log("Something went wrong in the service layer");
+      throw error;
+    }
+  }
   async getAllPosts() {
     try {
       const posts = await this.PostsRepository.getAll();
@@ -47,13 +56,13 @@ class PostsService {
       const post = await this.PostsRepository.upvote(postId, user_id);
       return post;
     } catch (error) {
-      console.log("Something went wrong in the service layer");
+      console.log("Something went wrong in the PostService layer");
       throw error;
     }
   }
-  async downvotePost(postId, username) {
+  async downvotePost(postId, user_id) {
     try {
-      const post = await this.PostsRepository.downvote(postId, username);
+      const post = await this.PostsRepository.downvote(postId, user_id);
       return post;
     } catch (error) {
       console.log("Something went wrong in the service layer");

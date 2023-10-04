@@ -8,7 +8,7 @@ class PostsRepository {
       return post._doc;
     } catch (error) {
       console.log("something went wrong in Postrepository level");
-      throw Error;
+      throw errors;
     }
   }
 
@@ -24,10 +24,18 @@ class PostsRepository {
       return data;
     } catch (error) {
       console.log("something went wrong in Postrepository level");
-      throw Error;
+      throw error;
     }
   }
-
+  async update(id, data) {
+    try {
+      const post = await Post.findByIdAndUpdate(id, data, { new: true });
+      return post;
+    } catch (error) {
+      console.log("something went wrong in Postrepository level");
+      throw error;
+    }
+  }
   async delete(id) {
     try {
       const posts = await Post.findByIdAndDelete(id);
@@ -46,7 +54,7 @@ class PostsRepository {
       return { ..._doc, numberOfAnswers };
     } catch (error) {
       console.log("something went wrong in Postrepository level");
-      throw Error;
+      throw error;
     }
   }
 
@@ -56,14 +64,15 @@ class PostsRepository {
       if (!post) {
         throw new Error("Post not found.");
       }
-
       // Check if the user is already in the downvotes list
-      if (post.downvotes.includes(userId)) {
+      if (post.downvotes !== null && post.downvotes.includes(userId)) {
+        console.log("YES");
         // Add the user to the downvotes list
         post.downvotes.pull(userId);
       }
       // Check if the user is in the upvotes list
-      if (!post.upvotes.includes(userId)) {
+      if (post.upvotes !== null && !post.upvotes.includes(userId)) {
+        console.log("No");
         // Remove the user from the upvotes list
         post.upvotes.push(userId);
       }
@@ -75,7 +84,7 @@ class PostsRepository {
       return { upvotes, downvotes };
     } catch (error) {
       console.log("something went wrong in Postrepository level");
-      throw Error;
+      throw error;
     }
   }
 
@@ -88,13 +97,13 @@ class PostsRepository {
       }
 
       // Check if the user is in the downvotes list
-      if (!post.downvotes.includes(userId)) {
+      if (post.downvotes !== null && !post.downvotes?.includes(userId)) {
         // Remove the user from the downvotes list
         post.downvotes.push(userId);
       }
 
       // Check if the user is already in the upvotes list
-      if (post.upvotes.includes(userId)) {
+      if (post.upvotes !== null && post.upvotes?.includes(userId)) {
         // Add the user to the upvotes list
         post.upvotes.pull(userId);
       }
@@ -107,7 +116,7 @@ class PostsRepository {
       return { upvotes, downvotes };
     } catch (error) {
       console.log("something went wrong in Postrepository level");
-      throw Error;
+      throw error;
     }
   }
 
@@ -117,7 +126,7 @@ class PostsRepository {
       return count;
     } catch (error) {
       console.log("something went wrong in Postrepository level");
-      throw Error;
+      throw error;
     }
   }
 }

@@ -44,7 +44,30 @@ const getPostById = async (req, res) => {
     });
   }
 };
-
+const updatePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = {
+      title: req.body.title,
+      body: req.body.body,
+      user_id: res.locals.user_id,
+    };
+    const response = await postsService.updatePost(id, updateData);
+    return res.status(200).json({
+      success: true,
+      message: "Successfully update post",
+      data: response,
+      err: {},
+    });
+  } catch (error) {
+    return res.status(error.statusCode).json({
+      message: error.message,
+      data: {},
+      success: false,
+      err: error.explanation,
+    });
+  }
+};
 const getAllPosts = async (req, res) => {
   try {
     const response = await postsService.getAllPosts();
@@ -86,6 +109,7 @@ const deletePost = async (req, res) => {
 const upvotePost = async (req, res) => {
   try {
     const { postId } = req.body;
+    // console.log(id);
     const response = await postsService.upvotePost(postId, res.locals.user_id);
     return res.status(200).json({
       success: true,
@@ -132,4 +156,5 @@ module.exports = {
   getPostById,
   upvotePost,
   downvotePost,
+  updatePost,
 };

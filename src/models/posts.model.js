@@ -36,6 +36,12 @@ const postSchema = new mongoose.Schema(
     numberOfAnswers: {
       type: Number,
       default: 0,
+      validate: {
+        validator: function (value) {
+          return value >= 0;
+        },
+        message: "The value must be greater than or equal to zero.",
+      },
     },
   },
 

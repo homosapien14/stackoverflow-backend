@@ -27,12 +27,17 @@ router.post("/", auth, validatePostData, postsController.addPost);
  *  @desc       delete a post
  */
 router.delete("/:id", auth, postsController.deletePost);
-/** @route      POST /api/posts/upvote
+
+/** @route      PUT /api/posts/upvote
+ *  @desc       update a post
+ */
+router.put("/:id", auth, postsController.updatePost);
+/** @route      PATCH /api/posts/upvote
  *  @desc       upvote a post
  */
 router.patch("/upvote", auth, postsController.upvotePost);
 
-/** @route      POST /api/posts/downvote
+/** @route      PATCH /api/posts/downvote
  *  @desc       downvote a post
  */
 router.patch("/downvote", auth, postsController.downvotePost);
