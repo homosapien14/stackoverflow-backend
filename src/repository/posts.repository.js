@@ -21,7 +21,7 @@ class PostsRepository {
           ...post._doc,
         };
       });
-      return data;
+      return data.reverse();
     } catch (error) {
       console.log("something went wrong in Postrepository level");
       throw error;

@@ -17,8 +17,18 @@ class UserService {
         ...data,
         password: hashPassword,
       };
+      // console.log(userData);
       const user = await this.userRepository.create(userData);
-      return user;
+      const newJWT = this.createToken({
+        username: user.username,
+        id: user._id,
+      });
+      return {
+        token: newJWT,
+        username: user.username,
+        id: user._id,
+        views: user.views,
+      };
     } catch (error) {
       console.log("Something went wrong in the service layer");
       throw error;
